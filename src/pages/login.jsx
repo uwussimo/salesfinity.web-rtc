@@ -4,8 +4,17 @@ import Link from 'next/link'
 import {AuthLayout} from '@/components/auth/AuthLayout'
 import {Button} from '@/components/Button'
 import {TextField} from '@/components/Fields'
+import {signIn, useSession} from "next-auth/react";
+import {useEffect} from "react";
+import {useRouter} from "next/router";
 
 export default function Login() {
+    const {data: session} = useSession()
+    const router = useRouter();
+
+    useEffect(() => {
+        session && router.push('/dashboard')
+    }, [router, session])
     return (
         <>
             <Head>
@@ -48,6 +57,19 @@ export default function Login() {
                         className="mt-8 w-full bg-indigo-600"
                     >
                         Sign in to account
+                    </Button>
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
+                        <span
+                            className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">or</span>
+                    </div>
+                    <Button
+                        type="submit"
+                        color="cyan"
+                        className="w-full bg-zinc-900"
+                        onClick={() => signIn()}
+                    >
+                        Sign in with GitHub
                     </Button>
                 </form>
             </AuthLayout>

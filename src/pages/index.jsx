@@ -6,12 +6,18 @@ import {Hero} from "@/components/Hero";
 import {Pricing} from "@/components/Pricing";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
+import {useSession} from "next-auth/react";
 
 export default function Home() {
     const router = useRouter()
+    const {data: session} = useSession()
     useEffect(() => {
-        router.push('/login')
-    }, [router])
+        if (session) {
+            router.push('/dashboard')
+        } else {
+            router.push('/login')
+        }
+    }, [router, session])
 
     return (
         <>
